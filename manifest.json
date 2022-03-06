@@ -1,0 +1,30 @@
+﻿{
+    "$schema": "https://raw.githubusercontent.com/bsmg/BSIPA-MetadataFileSchema/master/Schema.json",
+    "id": "HitscoreCounter",
+    "name": "HitscoreCounter",
+    "author": "Kinsi55",
+    "version": "0.1.0",
+    "description": "Counter for Counters+ that counts the scores of your cuts grouped into configurable ranges",
+    "gameVersion": "1.18.3",
+    "dependsOn": {
+        "BSIPA": "^4.0.5",
+        "Counters+": "^2.2.0"
+    },
+    "features": {
+        "CountersPlus.CustomCounter": {
+            "Name": "Hitscore Counter",
+            "Description": "Counts the scores of your cuts grouped into configurable ranges",
+            "CounterLocation": "HitscoreCounter.HitscoreCounter",
+            "ConfigDefaults": {
+                "Enabled": true,
+                "Position": "BelowEnergy",
+                "Distance": 2
+            },
+            "BSML": {
+                "Resource": "HitscoreCounter.settings.bsml",
+                "Host": "HitscoreCounter.SettingsHandler",
+                "Icon": "HitscoreCounter.Images.icon.png"
+            }
+        }
+    }
+}
