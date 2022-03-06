@@ -4,6 +4,8 @@ Counts the amoungts of cuts of a specific value. You can configure it to be vert
 
 By default the splits are `115,114,110,100,0` which thus counts 115s, 114s, 113-110, 109-100 and everything below 100 seperately
 
+Commissioned by [zachakaquack](https://www.twitch.tv/zachakaquack)
+
 ---
 
 The Game version(s) specific releases are compatible with are mentioned in the Release title (Its obviously possible latest is not supported assuming its been released recently). If you need the plugin for an older version - Grab an older release that fits 🤯
