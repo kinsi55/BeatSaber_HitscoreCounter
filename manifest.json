@@ -3,12 +3,12 @@
     "id": "HitscoreCounter",
     "name": "HitscoreCounter",
     "author": "Kinsi55",
-    "version": "0.1.0",
+    "version": "0.1.1",
     "description": "Counter for Counters+ that counts the scores of your cuts grouped into configurable ranges",
-    "gameVersion": "1.18.3",
+    "gameVersion": "1.20.0",
     "dependsOn": {
         "BSIPA": "^4.0.5",
-        "Counters+": "^2.2.0"
+        "Counters+": "^2.2.7"
     },
     "features": {
         "CountersPlus.CustomCounter": {

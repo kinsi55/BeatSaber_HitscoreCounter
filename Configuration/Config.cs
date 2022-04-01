@@ -17,7 +17,7 @@ namespace HitscoreCounter {
 		public virtual List<int> splits { get; set; } = new List<int>() { 115, 114, 110, 100, 0 };
 
 		public static IEnumerable<int> FilterSplitsList(IEnumerable<int> splits) {
-			var x = splits.Where(x => x <= ScoreModel.kMaxCutRawScore && x >= 0).Distinct().OrderByDescending(x => x);
+			var x = splits.Where(x => x <= 115 && x >= 0).Distinct().OrderByDescending(x => x);
 
 			if(!x.Any())
 				return new[] { 115 };

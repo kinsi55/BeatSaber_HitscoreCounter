@@ -4,13 +4,16 @@ using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using TMPro;
 using UnityEngine;
+using Zenject;
 
 namespace HitscoreCounter {
-	public class HitscoreCounter : BasicCustomCounter, INoteEventHandler, ISaberSwingRatingCounterDidFinishReceiver {
+	public class HitscoreCounter : BasicCustomCounter {
 		TMP_Text[] hintLabels;
 		TMP_Text[] valueLabels;
 		int[] targets;
 		int[] values;
+
+		[Inject] ScoreController scoreController;
 
 		public override void CounterInit() {
 			var label = CanvasUtility.CreateTextFromSettings(Settings);
@@ -54,7 +57,7 @@ namespace HitscoreCounter {
 				}
 			}
 
-			var prevValue = ScoreModel.kMaxCutRawScore + 1;
+			var prevValue = 116;
 			for(var i = 0; i < countersCount; i++) {
 				if(!Config.Instance.verticalLayout)
 					hintLabels[i].fontStyle = FontStyles.Underline;
@@ -80,6 +83,8 @@ namespace HitscoreCounter {
 				prevValue = Config.Instance.splits[i];
 				targets[i] = Config.Instance.splits[i] - 1;
 			}
+
+			scoreController.scoringForNoteFinishedEvent += ScoreController_scoringForNoteFinishedEvent;
 		}
 
 		public override void CounterDestroy() {
@@ -87,6 +92,7 @@ namespace HitscoreCounter {
 			valueLabels = null;
 			targets = null;
 			values = null;
+			scoreController.scoringForNoteFinishedEvent -= ScoreController_scoringForNoteFinishedEvent;
 		}
 
 		void IncrementValueLabelForHitscore(int hitscore) {
@@ -98,26 +104,11 @@ namespace HitscoreCounter {
 			}
 		}
 
-		private Dictionary<ISaberSwingRatingCounter, float> noteCutAccs = new Dictionary<ISaberSwingRatingCounter, float>();
-		public void OnNoteCut(NoteData data, NoteCutInfo info) {
-			if(!info.allIsOK || data.colorType == ColorType.None)
+		private void ScoreController_scoringForNoteFinishedEvent(ScoringElement scoringElement) {
+			if(!(scoringElement is GoodCutScoringElement goodCut && goodCut.noteData.scoringType == NoteData.ScoringType.Normal))
 				return;
 
-			noteCutAccs.Add(info.swingRatingCounter, info.cutDistanceToCenter);
-			info.swingRatingCounter.RegisterDidFinishReceiver(this);
-		}
-
-		public void OnNoteMiss(NoteData data) { }
-
-		public void HandleSaberSwingRatingCounterDidFinish(ISaberSwingRatingCounter saberSwingRatingCounter) {
-			if(!noteCutAccs.TryGetValue(saberSwingRatingCounter, out var nci))
-				return;
-
-			noteCutAccs.Remove(saberSwingRatingCounter);
-
-			ScoreModel.RawScoreWithoutMultiplier(saberSwingRatingCounter, nci, out int beforeCut, out int afterCut, out int cutDistance);
-
-			IncrementValueLabelForHitscore(beforeCut + afterCut + cutDistance);
+			IncrementValueLabelForHitscore(scoringElement.cutScore);
 		}
 	}
 }
